@@ -42,7 +42,7 @@
   }
   printMessage();
 
-  // Rest Parameter
+  // Rest Parameter (Spread Operator, 전개 연산자)
   function printSum(...args: number[]): number {
     console.log(args);
     return args.reduce((prev, curr) => prev + curr, 0);
