@@ -11,7 +11,7 @@
   function print(message = "hahah") {
     console.log(message);
   }
-  printMessage("1234");
+  // printMessage("1234");
 
   function add(x: number, y: number) {
     return x + y;
