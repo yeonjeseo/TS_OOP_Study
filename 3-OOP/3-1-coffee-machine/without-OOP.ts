@@ -1,5 +1,3 @@
-import { number } from "joi";
-
 {
   type CoffeeCup = {
     shots: number;
