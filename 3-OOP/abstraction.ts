@@ -7,8 +7,15 @@
   interface CoffeeMaker {
     makeCoffee(shots: number): CoffeeCup;
   }
+  // interface : 명세
+  interface CommercialCoffeeMaker {
+    makeCoffee(shots: number): CoffeeCup;
+    fillCoffeeBeans(beans: number): void;
+    clean(): void;
+  }
+
   // 이 클래스는 interface 규격을 따른다 : implements CoffeMaker
-  class CoffeeMachine implements CoffeeMaker {
+  class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
     static BEANS_GRAM_PER_SHOT = 7;
     private coffeeBeans: number = 0;
 
@@ -33,7 +40,12 @@
       if (beans < 0) {
         throw new Error("value for beansg should be greater than 0");
       }
+      console.log("Refilling coffee beans....");
       this.coffeeBeans += beans;
+    }
+
+    clean() {
+      console.log("Cleaning the Machine!");
     }
     makeCoffee(shots: number): CoffeeCup {
       this.grindBeans(shots);
@@ -48,14 +60,27 @@
     }
   }
 
-  // 접근 제어자를 통해서 추상화
+  class AmateurUer {
+    constructor(private machine: CoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+    }
+  }
+
+  class ProBarista {
+    constructor(private machine: CommercialCoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+      this.machine.fillCoffeeBeans(45);
+      this.machine.clean();
+    }
+  }
+
   const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
-  maker.fillCoffeeBeans(32);
-  maker.makeCoffee(2);
-  // 인터페이스를 통해서 추상화
-  const maker2: CoffeeMaker = CoffeeMachine.makeMachine(32);
-  // 커피콩 API는 인터페이스에 없기 때문에 사용할 수 없음.
-  // 얼마만큼의 행동을 약속할 건지 보장
-  // maker2.fillCoffeeBeans(32);
-  maker2.makeCoffee(2);
+  const amateur = new AmateurUer(maker);
+  const pro = new ProBarista(maker);
+  amateur.makeCoffee();
+  pro.makeCoffee();
 }
